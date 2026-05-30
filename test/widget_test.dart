@@ -1,30 +1,63 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:simple_notes/main.dart';
+import 'package:simple_notes/features/notes/data/note_model.dart';
+import 'package:simple_notes/features/tags/data/tag_model.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  group('Tag Model Tests', () {
+    test('Tag serialization and deserialization', () {
+      final tag = Tag(id: '1', name: 'Work', colorHex: '0xFF4CAF50');
+      final json = tag.toJson();
+      final fromJson = Tag.fromJson(json);
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+      expect(fromJson.id, '1');
+      expect(fromJson.name, 'Work');
+      expect(fromJson.colorHex, '0xFF4CAF50');
+    });
+  });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+  group('Note Model Tests', () {
+    test('Note serialization and deserialization', () {
+      final now = DateTime.now();
+      final note = Note(
+        id: '101',
+        title: 'Meeting Notes',
+        content: 'Discuss budget allocation 🚀',
+        tagIds: ['1'],
+        createdAt: now,
+        updatedAt: now,
+      );
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+      final json = note.toJson();
+      final fromJson = Note.fromJson(json);
+
+      expect(fromJson.id, '101');
+      expect(fromJson.title, 'Meeting Notes');
+      expect(fromJson.content, 'Discuss budget allocation 🚀');
+      expect(fromJson.tagIds, contains('1'));
+      expect(fromJson.createdAt.millisecondsSinceEpoch, now.millisecondsSinceEpoch);
+      expect(fromJson.updatedAt.millisecondsSinceEpoch, now.millisecondsSinceEpoch);
+    });
+
+    test('Note copyWith works correctly', () {
+      final now = DateTime.now();
+      final note = Note(
+        id: '101',
+        title: 'Meeting Notes',
+        content: 'Discuss budget allocation 🚀',
+        tagIds: ['1'],
+        createdAt: now,
+        updatedAt: now,
+      );
+
+      final updated = note.copyWith(
+        title: 'Updated Title',
+        content: 'Updated Content',
+      );
+
+      expect(updated.id, '101');
+      expect(updated.title, 'Updated Title');
+      expect(updated.content, 'Updated Content');
+      expect(updated.tagIds, contains('1'));
+    });
   });
 }

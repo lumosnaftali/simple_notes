@@ -62,4 +62,6 @@ A Flutter notes application with encrypted local storage, tag-based organization
 | 2026-05-30 | Created GitHub Issue #1 with full Flutter app plan. Updated project context, tech stack, and implementation order in AGENTS.md. Rewrote README.md. | AGENTS.md, README.md |
 | 2026-05-30 | Scaffolded Flutter project and resolved dependency conflicts. Implemented custom AppTheme (light/dark Material 3), EncryptedStorage (Hive + AES secure storage service), Note and Tag domains (Models, Repositories, ViewModels, and fully styled UI screens). Compiles with zero analyzer warnings. | pubspec.yaml, lib/main.dart, lib/core/theme/app_theme.dart, lib/core/storage/..., lib/features/notes/..., lib/features/tags/..., lib/shared/widgets/... |
 | 2026-05-30 | Created comprehensive .gitignore for Flutter app and excluded agent/local files. | .gitignore, AGENTS.md |
+| 2026-05-30 | Replaced default counter widget test with proper Note and Tag model unit tests. | test/widget_test.dart, AGENTS.md |
+
 
